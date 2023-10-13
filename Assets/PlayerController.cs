@@ -47,8 +47,6 @@ public class PlayerController : MonoBehaviour
     private AlivePlane alivePlane;
 
     public AdsManager ads;
-
-    public AdmobController admob;
     
     // Start is called before the first frame update
     void Start()
@@ -145,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
 
     void OnTriggerExit(Collider other){
-        if(other.gameObject.tag=="AlivePlane"){
+        if(other.gameObject.tag=="AlivePlane" && !cantDie){
             Debug.Log("die from exit alive box");
             restart();
         }
@@ -168,6 +166,8 @@ public class PlayerController : MonoBehaviour
                 
 
             }
+
+            cantDie=false;
         }
         if(other.gameObject.tag=="newcube" && alive){
             if(other.gameObject.transform.parent!=transform && !cantDie){
@@ -268,8 +268,6 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.isKinematic=false;
-
-        cantDie=false;
         
         cubesController.play=true;
         //cubesController.startGame();
@@ -397,10 +395,7 @@ public static bool show=true;
 private bool showedOnce=false;
     void closeRunPanel(){
         if(show && runPanel.activeSelf && !showedOnce) {
-            if(!ads.showVideo()){
-                admob.showIntersitionalAd();
-            }
-            
+            ads.showVideo();
             showedOnce=true;
             show=!show;
             
